@@ -31,13 +31,19 @@ public class ApplicationSecurityConfig {
 	@Bean
 	SecurityFilterChain defaulSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/**")
-				.hasRole(ApplicationUserRole.STUDENT.name()).requestMatchers(HttpMethod.DELETE, "/management/api/**")
-				.hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+		http.csrf().disable()
+				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/**")
+				.hasRole(ApplicationUserRole.STUDENT.name()).requestMatchers(HttpMethod.GET, "/management/api/**")
+				.hasAuthority(ApplicationUserPermission.COURSE_READ.getPermission())
+				
 				.requestMatchers(HttpMethod.POST, "/management/api/**")
 				.hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
 				.requestMatchers(HttpMethod.PUT, "/management/api/**")
-				.hasAnyAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission()).requestMatchers("/management/api/**")
+				.hasAnyAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+				.requestMatchers(HttpMethod.GET,"/management/api/**")
+				.hasAnyAuthority(ApplicationUserPermission.COURSE_READ.getPermission())
+				.requestMatchers("/management/api/**")
+//				.hasAuthority(ApplicationUserPermission.COURSE_READ.getPermission())
 				.hasRole(ApplicationUserRole.ADMIN.name()).requestMatchers("/management/api/**")
 				.hasRole(ApplicationUserRole.ADMINTRAINEE.name()).anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults());

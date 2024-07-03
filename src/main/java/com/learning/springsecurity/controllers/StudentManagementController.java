@@ -31,7 +31,8 @@ public class StudentManagementController {
 	
 	@PostMapping
 	public void registerNewStudent(@RequestBody Student student) {
-		System.out.println(student);		
+		System.out.println("student Id : "+student.getStudentId());		
+		System.out.println("name : "+student.getName());
 	}
 	
 	@DeleteMapping(path = "{studentId}")
